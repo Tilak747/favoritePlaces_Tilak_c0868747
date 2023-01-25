@@ -14,6 +14,10 @@
 		4132EDC529809BD4007FD8D5 /* favoritePlaces_Tilak_c0868747.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4132EDC329809BD4007FD8D5 /* favoritePlaces_Tilak_c0868747.xcdatamodeld */; };
 		4132EDC729809BD4007FD8D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4132EDC629809BD4007FD8D5 /* Assets.xcassets */; };
 		4132EDCA29809BD4007FD8D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4132EDC829809BD4007FD8D5 /* LaunchScreen.storyboard */; };
+		4132EDD329809CF4007FD8D5 /* FavPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4132EDD229809CF4007FD8D5 /* FavPlace.swift */; };
+		4132EDD629809DAA007FD8D5 /* PlaceListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4132EDD529809DAA007FD8D5 /* PlaceListTVC.swift */; };
+		4132EDD92980A163007FD8D5 /* PlaceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4132EDD82980A163007FD8D5 /* PlaceManager.swift */; };
+		4132EDDB2980A2A6007FD8D5 /* AddPlaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4132EDDA2980A2A6007FD8D5 /* AddPlaceVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,10 @@
 		4132EDC629809BD4007FD8D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4132EDC929809BD4007FD8D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4132EDCB29809BD4007FD8D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4132EDD229809CF4007FD8D5 /* FavPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavPlace.swift; sourceTree = "<group>"; };
+		4132EDD529809DAA007FD8D5 /* PlaceListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListTVC.swift; sourceTree = "<group>"; };
+		4132EDD82980A163007FD8D5 /* PlaceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceManager.swift; sourceTree = "<group>"; };
+		4132EDDA2980A2A6007FD8D5 /* AddPlaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +66,9 @@
 		4132EDB929809BD4007FD8D5 /* favoritePlaces_Tilak_c0868747 */ = {
 			isa = PBXGroup;
 			children = (
+				4132EDD72980A158007FD8D5 /* Manager */,
+				4132EDD429809D8E007FD8D5 /* Controller */,
+				4132EDD129809CE3007FD8D5 /* Model */,
 				4132EDBA29809BD4007FD8D5 /* AppDelegate.swift */,
 				4132EDBC29809BD4007FD8D5 /* SceneDelegate.swift */,
 				4132EDBE29809BD4007FD8D5 /* ViewController.swift */,
@@ -68,6 +79,31 @@
 				4132EDC329809BD4007FD8D5 /* favoritePlaces_Tilak_c0868747.xcdatamodeld */,
 			);
 			path = favoritePlaces_Tilak_c0868747;
+			sourceTree = "<group>";
+		};
+		4132EDD129809CE3007FD8D5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4132EDD229809CF4007FD8D5 /* FavPlace.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4132EDD429809D8E007FD8D5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				4132EDD529809DAA007FD8D5 /* PlaceListTVC.swift */,
+				4132EDDA2980A2A6007FD8D5 /* AddPlaceVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		4132EDD72980A158007FD8D5 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				4132EDD82980A163007FD8D5 /* PlaceManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,8 +178,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4132EDC529809BD4007FD8D5 /* favoritePlaces_Tilak_c0868747.xcdatamodeld in Sources */,
+				4132EDD629809DAA007FD8D5 /* PlaceListTVC.swift in Sources */,
+				4132EDDB2980A2A6007FD8D5 /* AddPlaceVC.swift in Sources */,
 				4132EDBF29809BD4007FD8D5 /* ViewController.swift in Sources */,
 				4132EDBB29809BD4007FD8D5 /* AppDelegate.swift in Sources */,
+				4132EDD92980A163007FD8D5 /* PlaceManager.swift in Sources */,
+				4132EDD329809CF4007FD8D5 /* FavPlace.swift in Sources */,
 				4132EDBD29809BD4007FD8D5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
