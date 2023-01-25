@@ -72,68 +72,68 @@ class AddPlaceVC : UIViewController,CLLocationManagerDelegate{
         doubleTap.numberOfTapsRequired = 2
         mapView.addGestureRecognizer(doubleTap)
     }
+    
+    func addUpdateAnnotation(manager: CLLocationManager,location:CLLocationCoordinate2D){
+        
+        
+        var title = ""
+        var locality = ""
+        var postalCode = ""
+        
+        let loc = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        
+        CLGeocoder().reverseGeocodeLocation(loc) { (placemarks, error) in
+            if error != nil {
+                print(error!)
+            } else {
+                if let placemark = placemarks?[0] {
+                    
+                    
+                    locality = placemark.locality ?? ""
+                    postalCode = placemark.postalCode ?? ""
+                    
+                    var address = ""
+                    if placemark.subThoroughfare != nil {
+                        address += placemark.subThoroughfare! + " "
+                    }
+                    
+                    if placemark.thoroughfare != nil {
+                        address += placemark.thoroughfare! + "\n"
+                    }
+        
+                    if placemark.subAdministrativeArea != nil {
+                        address += placemark.subAdministrativeArea! + "\n"
+                    }
+     
+                    
+                    if placemark.country != nil {
+                        address += placemark.country! + "\n"
+                    }
+                    
+                    title = address
+                    
+                    self.putValues(title: title, lat: location.latitude, lng: location.longitude, locality: locality, postalCode: postalCode)
+                    
+                    self.currentAnnotation.title = "Fav Place"
+                    self.currentAnnotation.subtitle = title
+                    
+                    self.mapView.addAnnotation(self.currentAnnotation)
+                }
+            }
+        }
+    }
+    
     @objc func addAnnotationOnDoubleTap(sender: UITapGestureRecognizer){
         
         mapView.removeAnnotation(currentAnnotation)
         
-        
         currentAnnotation = MKPointAnnotation()
-        
-        
-        func getLocationName(manager: CLLocationManager,location:CLLocationCoordinate2D){
-            var title = ""
-            var locality = ""
-            var postalCode = ""
-            
-            let loc = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            
-            CLGeocoder().reverseGeocodeLocation(loc) { (placemarks, error) in
-                if error != nil {
-                    print(error!)
-                } else {
-                    if let placemark = placemarks?[0] {
-                        
-                        
-                        locality = placemark.locality ?? ""
-                        postalCode = placemark.postalCode ?? ""
-                        
-                        var address = ""
-                        if placemark.subThoroughfare != nil {
-                            address += placemark.subThoroughfare! + " "
-                        }
-                        
-                        if placemark.thoroughfare != nil {
-                            address += placemark.thoroughfare! + "\n"
-                        }
-            
-                        if placemark.subAdministrativeArea != nil {
-                            address += placemark.subAdministrativeArea! + "\n"
-                        }
-         
-                        
-                        if placemark.country != nil {
-                            address += placemark.country! + "\n"
-                        }
-                        
-                        title = address
-                        
-                        self.putValues(title: title, lat: location.latitude, lng: location.longitude, locality: locality, postalCode: postalCode)
-                        
-                        self.currentAnnotation.title = "Fav Place"
-                        self.currentAnnotation.subtitle = title
-                        
-                        self.mapView.addAnnotation(self.currentAnnotation)
-                    }
-                }
-            }
-        
-        }
         
         let touchPoint = sender.location(in: mapView)
         let coordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
         currentAnnotation.coordinate = coordinate
     
-        getLocationName(manager: locationManager, location: coordinate)
+        addUpdateAnnotation(manager: locationManager, location: coordinate)
         
         
     }
@@ -301,6 +301,7 @@ extension AddPlaceVC: MKMapViewDelegate{
             let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "customPin") ?? MKPinAnnotationView()
             annotationView.image = UIImage(named: "ic_place_2x")
             annotationView.canShowCallout = false
+            annotationView.isDraggable = false
             annotationView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
             return annotationView
         default:
@@ -308,9 +309,38 @@ extension AddPlaceVC: MKMapViewDelegate{
             let annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "Fav Place")
             annotationView.image = UIImage(named: "marker")
             annotationView.canShowCallout = true
+            annotationView.isDraggable = true
             annotationView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
             return annotationView
         }
+        
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
+        switch newState {
+            case .starting:
+                view.dragState = .dragging
+            case .ending, .canceling:
+                view.dragState = .none
+                getNewAnnotationCoordinate(annotationView: view)
+            
+            default: break
+        }
+    }
+    
+    func getNewAnnotationCoordinate(annotationView:MKAnnotationView){
+        
+        guard let coordinate = annotationView.annotation?.coordinate else {
+            return
+        }
+        
+        self.mapView.removeAnnotation(currentAnnotation)
+        
+        currentAnnotation = MKPointAnnotation()
+        currentAnnotation.coordinate = coordinate
+        
+        self.addUpdateAnnotation(manager: self.locationManager, location: coordinate)
         
         
     }
