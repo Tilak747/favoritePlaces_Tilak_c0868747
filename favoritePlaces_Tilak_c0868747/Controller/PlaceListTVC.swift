@@ -24,6 +24,9 @@ class PlaceListTVC:UIViewController{
         tableView.dataSource = self
         initData()
         loadData()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(saveCoreData), name: UIApplication.willResignActiveNotification, object: nil)
+        
     }
     
     func initData(){
@@ -36,6 +39,16 @@ class PlaceListTVC:UIViewController{
         tableView.reloadData()
     }
     
+    @objc func saveCoreData(){
+        PlaceManager.shared.saveCoreData(managedContext: managedContext)
+        tableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let tvc = segue.destination as? AddPlaceVC {
+            tvc.delegate = self
+        }
+    }
     
     
 }

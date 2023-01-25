@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import MapKit
 
 class PlaceManager{
     
@@ -42,8 +43,6 @@ class PlaceManager{
     }
     
     
-
-    
     func saveCoreData(managedContext : NSManagedObjectContext){
         clearData(managedContext: managedContext)
         for place in places! {
@@ -75,6 +74,11 @@ class PlaceManager{
         } catch {
             print("Error deleting records \(error)")
         }
+    }
+    
+    func addPlace(place:FavPlace,managedContext : NSManagedObjectContext){
+        places?.append(place)
+        saveCoreData(managedContext: managedContext)
     }
     
 }
