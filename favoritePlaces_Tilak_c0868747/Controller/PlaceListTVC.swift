@@ -97,6 +97,7 @@ extension PlaceListTVC : UITableViewDelegate,UITableViewDataSource{
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "AddPlaceViewController") as! AddPlaceVC
         nextViewController.delegate = self
         nextViewController.favPlace = place
+        nextViewController.selectedPosition = indexPath.row
         self.present(nextViewController, animated: true)
 
     }

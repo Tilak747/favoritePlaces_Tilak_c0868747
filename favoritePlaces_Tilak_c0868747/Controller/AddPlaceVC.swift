@@ -25,11 +25,12 @@ class AddPlaceVC : UIViewController,CLLocationManagerDelegate{
     var locationManager = CLLocationManager()
     var myCurrentLocationAnnotation:MKPointAnnotation?
     
-    var selectedPlace : FavPlace?
+    var selectedPosition = -1
     var favPlace : FavPlace?
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var managedContext : NSManagedObjectContext!
     
+    var selectedAnnoation : MKPointAnnotation?
     var currentAnnotation : MKPointAnnotation = MKPointAnnotation()
     
     
@@ -41,7 +42,7 @@ class AddPlaceVC : UIViewController,CLLocationManagerDelegate{
     override func viewDidLoad() {
 //        super.viewDidLoad()
         
-        print("selectedPlace place \(selectedPlace)")
+        print("selectedPlace place \(selectedPosition)")
         
         initMap()
         
@@ -54,12 +55,18 @@ class AddPlaceVC : UIViewController,CLLocationManagerDelegate{
         searchbar.addTarget(self, action: #selector(AddPlaceVC.textFieldDidChange(_:)), for: .editingChanged)
         
         
-        if(selectedPlace != nil){
-            currentAnnotation = MKPointAnnotation()
+        if(selectedPosition != -1){
             
-            let coordinate = CLLocationCoordinate2D(latitude: favPlace!.lat, longitude: favPlace!.lng)
+            let place :FavPlace = PlaceManager.shared.places![selectedPosition]
+            
+            let coordinate = CLLocationCoordinate2D(latitude: place.lat, longitude: place.lng)
+            
+            currentAnnotation = MKPointAnnotation()
+            currentAnnotation.coordinate = coordinate
             
             addUpdateAnnotation(manager: locationManager, location: coordinate)
+            
+
         }
         
         loadMap()
@@ -370,6 +377,11 @@ extension AddPlaceVC: MKMapViewDelegate{
             guard let place = self.favPlace else {
                 alertController.dismiss(animated: false)
                 return
+            }
+            
+            if(self.selectedPosition != -1){
+                PlaceManager.shared.places?.remove(at: self.selectedPosition)
+                print("deleted postion  \(self.selectedPosition)")
             }
             
             PlaceManager.shared.addPlace(place: place, managedContext: self.managedContext)
