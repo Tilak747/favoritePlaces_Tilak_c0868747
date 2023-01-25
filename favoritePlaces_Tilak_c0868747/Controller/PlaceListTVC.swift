@@ -17,6 +17,7 @@ class PlaceListTVC:UIViewController{
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var managedContext : NSManagedObjectContext!
     
+    var selectedPlace : FavPlace?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +47,7 @@ class PlaceListTVC:UIViewController{
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let tvc = segue.destination as? AddPlaceVC {
+            tvc.favPlace = selectedPlace
             tvc.delegate = self
         }
     }
@@ -86,5 +88,19 @@ extension PlaceListTVC : UITableViewDelegate,UITableViewDataSource{
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let place = PlaceManager.shared.places![indexPath.row]
+        
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "AddPlaceViewController") as! AddPlaceVC
+        nextViewController.delegate = self
+        nextViewController.favPlace = place
+        self.present(nextViewController, animated: true)
+
+    }
+    
+    
     
 }

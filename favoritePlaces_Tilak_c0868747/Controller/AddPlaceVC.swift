@@ -25,6 +25,7 @@ class AddPlaceVC : UIViewController,CLLocationManagerDelegate{
     var locationManager = CLLocationManager()
     var myCurrentLocationAnnotation:MKPointAnnotation?
     
+    var selectedPlace : FavPlace?
     var favPlace : FavPlace?
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var managedContext : NSManagedObjectContext!
@@ -38,7 +39,9 @@ class AddPlaceVC : UIViewController,CLLocationManagerDelegate{
     
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+//        super.viewDidLoad()
+        
+        print("selectedPlace place \(selectedPlace)")
         
         initMap()
         
@@ -49,6 +52,17 @@ class AddPlaceVC : UIViewController,CLLocationManagerDelegate{
         
         tableView.isHidden = true
         searchbar.addTarget(self, action: #selector(AddPlaceVC.textFieldDidChange(_:)), for: .editingChanged)
+        
+        
+        if(selectedPlace != nil){
+            currentAnnotation = MKPointAnnotation()
+            
+            let coordinate = CLLocationCoordinate2D(latitude: favPlace!.lat, longitude: favPlace!.lng)
+            
+            addUpdateAnnotation(manager: locationManager, location: coordinate)
+        }
+        
+        loadMap()
     }
     
     
@@ -61,9 +75,13 @@ class AddPlaceVC : UIViewController,CLLocationManagerDelegate{
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
         
         addDoubleTap()
+    }
+    
+    
+    func loadMap(){
+        locationManager.startUpdatingLocation()
     }
     
     
@@ -134,7 +152,6 @@ class AddPlaceVC : UIViewController,CLLocationManagerDelegate{
         currentAnnotation.coordinate = coordinate
     
         addUpdateAnnotation(manager: locationManager, location: coordinate)
-        
         
     }
     
